@@ -13,7 +13,7 @@ display = Display(visible=0, size=(800, 600))
 
 class ShenglishumaSpider(scrapy.Spider):
     name = "shenglishuma"
-    #allowed_domains = ["mall.jd.com"]
+    allowed_domains = ["jd.com"]
     #start_urls = ['https://mall.jd.com/view_search-907417-760070-755598-0-0-0-0-1-1-60.html']
     #start_urls = ['https://mall.jd.com/index-755598.html']
     #https://mall.jd.com/index-755598.html 数码店
@@ -32,7 +32,7 @@ class ShenglishumaSpider(scrapy.Spider):
     def __init__(self):
         display.start()
         self.browser = webdriver.Firefox()
-        #self.browser.set_page_load_timeout(30)
+        self.browser.set_page_load_timeout(30)
         
 
     def closed(self,spider):
@@ -51,7 +51,9 @@ class ShenglishumaSpider(scrapy.Spider):
 #            
 #        for url in url_list:
 #            yield Request(url=url, callback=self.parse)   
+        #input_text = input("请输入你要抓取的内容：\n")
         for i in range(1, 100):
+            #url = "https://search.jd.com/Search?keyword="+str(input_text)+"&enc=utf-8&page="+str(i*2-1)
             url = "https://search.jd.com/Search?keyword=盛力电子教育专营店&enc=utf-8&page="+str(i*2-1)
             print(url)
             yield Request(url=url,callback=self.parse)
@@ -70,12 +72,14 @@ class ShenglishumaSpider(scrapy.Spider):
         #urls = response.xpath('//div[@id="96376278"]').extract()
         #urls = response.xpath('//div[@class="p-name p-name-type-2"]/a[@target="_blank"]/@href').extract()
         urls = response.xpath('//div[@class="p-name p-name-type-2"]/a[@target="_blank"]/@href').extract()
-        print(urls)
+        #print(urls)
         for i in urls:
             url = response.urljoin(i)
-            print(url)
+            #print(url)
+            yield Request(url=url, callback=self.product)
+            
 #            try:
-            #yield Request(url=url, callback=self.product)
+#            yield Request(url=url, callback=self.product)
 #            except Exception as err:
 #                yield Request(url=url, callback=self.parse)
 #        sel=Selector(response)
@@ -84,7 +88,7 @@ class ShenglishumaSpider(scrapy.Spider):
 #        for ht in htmls:
 #            print(ht)
         
-        #urls = response.xpath('/html/body/title/text()').extract()
+        #urls = response.xprt ath('/html/body/title/text()').extract()
 #        url = "https://search.jd.com/Search?keyword=%E7%9B%9B%E5%8A%9B%E6%95%B0%E7%A0%81%E4%B8%93%E8%90%A5%E5%BA%97&enc=utf-8&suggest=1.def.0.V12&wq=shenglishuma&pvid=e6f52828f5084843b90dc45702d44e24"
 #        print(url)
 #        yield Request(url=url,callback=self.product_url)
@@ -100,13 +104,14 @@ class ShenglishumaSpider(scrapy.Spider):
     def product(self, response):
         #获取标题
         #title = response.xpath("//li[@class='img-hover']/img/@alt").extract()#部分网页不行
-        
+#        print(response.url)
         product_title_tmp = response.xpath("//div[@class='sku-name']/text()").extract()
-        #print(product_title)
+#        print(product_title_tmp)
         product_title = product_title_tmp[0].strip()
         if not product_title.strip():
             product_title = product_title_tmp[1].strip()
         title = response.xpath("//img/@alt").extract()
+#        print(title[0])
         #获取id号，用来构造价格和评论的链接
 #        pattern = r"(\d+)\.html$"
 #        id = re.findall(pattern, response.url)
@@ -122,7 +127,6 @@ class ShenglishumaSpider(scrapy.Spider):
 #        commentData = urllib.request.urlopen(commentUrl).read().decode("utf-8", "ignore")
 #        patt1 = r'"CommentCount":(\d+),'
 #        comment = re.findall(patt1, commentData)
- 
         item = JdShengLiShuMaItem()
         item["url"] = response.url
         item["product_title"] = product_title
