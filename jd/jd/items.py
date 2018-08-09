@@ -13,3 +13,30 @@ class JdItem(scrapy.Item):
     # name = scrapy.Field()
     imgurl = scrapy.Field()
     pass
+
+class AItem(scrapy.Item):
+    # define the fields for your item here like:
+    # name = scrapy.Field()
+    pic = scrapy.Field()
+    href = scrapy.Field()
+    pass
+
+class JdPhoneItem(scrapy.Item):
+    # define the fields for your item here like:
+    # name = scrapy.Field()
+    url = scrapy.Field()
+    product_title = scrapy.Field()
+    title = scrapy.Field()
+    price = scrapy.Field()
+    comment = scrapy.Field()
+    pass
+
+class JdShengLiShuMaItem(scrapy.Item):
+    # define the fields for your item here like:
+    # name = scrapy.Field()
+    url = scrapy.Field()
+    product_title = scrapy.Field()
+    title = scrapy.Field()
+    price = scrapy.Field()
+    comment = scrapy.Field()
+    pass

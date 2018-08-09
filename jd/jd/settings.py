@@ -9,7 +9,7 @@
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'jd'
+BOT_NAME = 'shenglishuma'
 
 SPIDER_MODULES = ['jd.spiders']
 NEWSPIDER_MODULE = 'jd.spiders'
@@ -55,9 +55,10 @@ DOWNLOAD_DELAY = 3
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'jd.middlewares.JdDownloaderMiddleware': 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+    #'jd.middlewares.JdDownloaderMiddleware': 543,
+    'jd.middlewares.SeleniumMiddleware': 543,
+}
 
 # Enable or disable extensions
 # See https://doc.scrapy.org/en/latest/topics/extensions.html
@@ -68,7 +69,10 @@ DOWNLOAD_DELAY = 3
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'jd.pipelines.JdPipeline': 300,
+    #'jd.pipelines.APipeline': 300,
+    #'jd.pipelines.JDPipeline': 300,
+    #'jd.pipelines.JdPhonePipeline': 300,
+    'jd.pipelines.JdShengLiShuMaPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
