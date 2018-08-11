@@ -25,6 +25,8 @@ class JdPhoneItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     url = scrapy.Field()
+    print('JdPhoneItem:\n')
+    print(url)
     product_title = scrapy.Field()
     title = scrapy.Field()
     price = scrapy.Field()
@@ -35,10 +37,18 @@ class JdShengLiShuMaItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     url = scrapy.Field()
-    print('item:\n')
+    print('JdShengLiShuMaItem:\n')
     print(url)
     product_title = scrapy.Field()
     title = scrapy.Field()
     price = scrapy.Field()
     comment = scrapy.Field()
+    pass
+
+class JdUrlListTestItem(scrapy.Item):
+    # define the fields for your item here like:
+    # name = scrapy.Field()
+    url = scrapy.Field()
+    print('JdUrlListTestItem:\n')
+    print(url)
     pass

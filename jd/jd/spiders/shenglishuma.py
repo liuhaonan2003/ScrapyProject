@@ -3,17 +3,18 @@
 
 import scrapy
 from scrapy.http import Request
-from jd.items import JdShengLiShuMaItem
+from jd.items import JdShengLiShuMaItem,JdUrlListTestItem
 from scrapy.selector import Selector
 import re
-import urllib.request
+#import urllib.request
 from selenium import webdriver
 from pyvirtualdisplay import Display
+import time
 display = Display(visible=0, size=(800, 600))
 
 class ShenglishumaSpider(scrapy.Spider):
     name = "shenglishuma"
-    allowed_domains = ["jd.com"]
+#    allowed_domains = ["jd.com"]
     #start_urls = ['https://mall.jd.com/view_search-907417-760070-755598-0-0-0-0-1-1-60.html']
     #start_urls = ['https://mall.jd.com/index-755598.html']
     #https://mall.jd.com/index-755598.html 数码店
@@ -24,15 +25,17 @@ class ShenglishumaSpider(scrapy.Spider):
     #https://mall.jd.com/index-803447.html 美妆店
     #start_urls = ['https://search.jd.com/Search?keyword=片仔癀美妆旗舰店&enc=utf-8&qrst=1&rt=1&stop=1&vt=2&wq=片仔癀美妆旗舰店&sid=803447&stock=1&page=1&s=1&click=0']
     
-#    allowed_domains = ["jd.com"]
-#    start_urls = ['http://jd.com/']
+    allowed_domains = ["jd.com"]
+    start_urls = ['http://jd.com/']
 
 
  
     def __init__(self):
         display.start()
-        self.browser = webdriver.Firefox()
-        self.browser.set_page_load_timeout(30)
+        SERVICE_ARGS = ['--load-images=false', '--disk-cache=true', '--ignore-ssl-errors=true']
+        self.browser = webdriver.PhantomJS(service_args=SERVICE_ARGS)
+#        self.browser = webdriver.Firefox()
+        self.browser.set_page_load_timeout(300)
         
 
     def closed(self,spider):
@@ -50,13 +53,19 @@ class ShenglishumaSpider(scrapy.Spider):
 #            url_list.append("https://search.jd.com/Search?keyword=盛力电子教育专营店&enc=utf-8&qrst=1&rt=1&stop=1&vt=2&sid=764567&stock=1&page="+format(str(i))+"&s=1&click=0")
 #            
 #        for url in url_list:
-#            yield Request(url=url, callback=self.parse)   
+#            yield Request(url=url, callback=self.parse)  
+ 
+        #测试单页抓取数据
+#        url = "https://item.jd.com/27036321765.html"
+#        print(url)
+#        yield Request(url=url, callback=self.product)
         #input_text = input("请输入你要抓取的内容：\n")
         for i in range(1, 100):
             #url = "https://search.jd.com/Search?keyword="+str(input_text)+"&enc=utf-8&page="+str(i*2-1)
             url = "https://search.jd.com/Search?keyword=盛力电子教育专营店&enc=utf-8&page="+str(i*2-1)
-            print(url)
+#            print(url)
             yield Request(url=url,callback=self.parse)
+
 #        print(url_list)
 #        start_urls = ['https://search.jd.com/Search?keyword=盛力电子教育专营店&enc=utf-8&qrst=1&rt=1&stop=1&vt=2&sid=764567&stock=1&page=1&s=1&click=0','https://search.jd.com/Search?keyword=盛力电子教育专营店&enc=utf-8&qrst=1&rt=1&stop=1&vt=2&sid=764567&stock=1&page=3&s=1&click=0']
 #        for url in start_urls:
@@ -72,11 +81,16 @@ class ShenglishumaSpider(scrapy.Spider):
         #urls = response.xpath('//div[@id="96376278"]').extract()
         #urls = response.xpath('//div[@class="p-name p-name-type-2"]/a[@target="_blank"]/@href').extract()
         urls = response.xpath('//div[@class="p-name p-name-type-2"]/a[@target="_blank"]/@href').extract()
-        #print(urls)
+        
         for i in urls:
-            url = response.urljoin(i)
-            #print(url)
-            yield Request(url=url, callback=self.product)
+            url1 = response.urljoin(i)
+            print('start_url')
+            print(url1)
+#            item = JdUrlListTestItem()
+#            item["url"] = url1
+#            yield item
+#            time.sleep(2)
+#            yield Request(url=url1, callback=self.product)
             
 #            try:
 #            yield Request(url=url, callback=self.product)
@@ -104,14 +118,14 @@ class ShenglishumaSpider(scrapy.Spider):
     def product(self, response):
         #获取标题
         #title = response.xpath("//li[@class='img-hover']/img/@alt").extract()#部分网页不行
-#        print(response.url)
+        print(response.url)
         product_title_tmp = response.xpath("//div[@class='sku-name']/text()").extract()
-#        print(product_title_tmp)
+        print(product_title_tmp)
         product_title = product_title_tmp[0].strip()
         if not product_title.strip():
             product_title = product_title_tmp[1].strip()
         title = response.xpath("//img/@alt").extract()
-#        print(title[0])
+        print(title[0])
         #获取id号，用来构造价格和评论的链接
 #        pattern = r"(\d+)\.html$"
 #        id = re.findall(pattern, response.url)
@@ -133,6 +147,6 @@ class ShenglishumaSpider(scrapy.Spider):
         item["title"] = title[0]
 #        item["price"] = price[0]
 #        item["comment"] = comment[0]
-        item["price"] = "100"
-        item["comment"] = "100"
+        item["price"] = '100'
+        item["comment"] = '100'
         yield item

@@ -9,6 +9,7 @@
 import pymysql.cursors
 from scrapy.pipelines.images import ImagesPipeline
 from scrapy import Request
+import time
 
 class JdPipeline(ImagesPipeline):
 
@@ -39,7 +40,7 @@ class JdPhonePipeline(object):
     def __init__(self):
         self.conn=pymysql.connect(host="192.168.1.29",
                                   port=3308,
-                                  user="root",
+                                  user="webtest",
                                   passwd="",#Tx@2018@2021@F1@com
                                   charset='utf8',
                                   cursorclass=pymysql.cursors.DictCursor)
@@ -74,17 +75,16 @@ class JdShengLiShuMaPipeline(object):
     def __init__(self):
         self.conn=pymysql.connect(host="192.168.1.29",
                                   port=3308,
-                                  user="root",
-                                  passwd="",
+                                  user="webtest",
+                                  passwd="123456",
                                   charset='utf8',
                                   cursorclass=pymysql.cursors.DictCursor)
         cur = self.conn.cursor()
-        cur.execute("DROP DATABASE IF EXISTS `jd`")
-        cur.execute("CREATE DATABASE jd")
+#        cur.execute("DROP DATABASE IF EXISTS `jd`")
+#        cur.execute("CREATE DATABASE jd")
         cur.execute("USE jd")
-        cur.execute("DROP TABLE IF EXISTS `shenglishuma`")
-        cur.execute("CREATE TABLE shenglishuma (id INT PRIMARY KEY AUTO_INCREMENT,url VARCHAR(50),product_title VARCHAR(255),title VARCHAR(50),price VARCHAR(10),comment VARCHAR(10))")
- 
+#        cur.execute("DROP TABLE IF EXISTS `shenglishuma`")
+#        cur.execute("CREATE TABLE shenglishuma (id INT PRIMARY KEY AUTO_INCREMENT,url VARCHAR(50),product_title VARCHAR(255),title VARCHAR(50),price VARCHAR(10),comment VARCHAR(10))")
     #mysql写入
     def process_item(self, item, spider):
         try:
@@ -93,9 +93,41 @@ class JdShengLiShuMaPipeline(object):
             title = item["title"]
             price = item["price"]
             comment = item["comment"]
-#            print(url)
+            print('JdShengLiShuMa_liu')
+            print(url)
             cur = self.conn.cursor()
             sql = "INSERT INTO shenglishuma (url, product_title, title, price, comment) VALUES ('"+url+"','"+product_title+"','"+title+"','"+price+"','"+comment+"')"
+            cur.execute(sql)
+            self.conn.commit()
+            time.sleep(2)
+            return item
+        except Exception as err:
+            print(err)
+ 
+    #关闭连接
+    def close_spider(self):
+        self.conn.close()
+        
+class JdUrlListTestPipeline(object):
+    #连接登陆mysql，新建数据表
+    def __init__(self):
+        self.conn=pymysql.connect(host="192.168.1.29",
+                                  port=3308,
+                                  user="webtest",
+                                  passwd="123456",
+                                  charset='utf8',
+                                  cursorclass=pymysql.cursors.DictCursor)
+        cur = self.conn.cursor()
+        cur.execute("USE jd")
+    #mysql写入
+    def process_item(self, item, spider):
+        try:
+            url = item["url"]
+            print('JdUrlListTest_liu')
+            print(url)
+            cur = self.conn.cursor()
+            #sql = "INSERT INTO shenglishuma (url) VALUES ('"+url+"')"
+            sql = "REPLACE INTO shenglishuma (url) VALUES ('"+url+"')"
             cur.execute(sql)
             self.conn.commit()
             return item
