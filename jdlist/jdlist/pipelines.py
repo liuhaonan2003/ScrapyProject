@@ -6,6 +6,7 @@
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 import pymysql.cursors
 from scrapy import Request
+import time
 
 class JdlistPipeline(object):
     """
@@ -63,15 +64,33 @@ class JdlistPipeline(object):
         :return:
         '''
         try:
+            
+            sql = ""
+            print('============================JdlistPipeline start===============================')
+            t = int(time.time())
             for url in item["url"]:
-                print('JdlistPipeline')
-                print(url)
+                print(t)
+#                print(url)
+                sql += "('"+url+"',"+format(t)+"),"
+#                sql += "('"+url+"'),"
+            print(sql)
+            if not sql.strip():
+                print('sql is null')
+            else:    
+                sql = "INSERT INTO jdlist (url,ctime) VALUES "+sql[0:len(sql)-1]
+#                sql = "INSERT INTO jdlist (url) VALUES "+sql[0:len(sql)-1]
+                print(sql)
+                cur = self.conn.cursor()
+                cur.execute(sql)
+                self.conn.commit()
+            
+            print('============================JdlistPipeline end===============================')
 #            url = item["url"]
 #            print('JdlistPipeline')
 #            print(url)
 #            cur = self.conn.cursor()
-#            #sql = "INSERT INTO shenglishuma (url) VALUES ('"+url+"')"
-#            sql = "REPLACE INTO shenglishuma (url) VALUES ('"+url+"')"
+#            #sql = "INSERT INTO jdlist (url) VALUES ('"+url+"')"
+#            sql = "REPLACE INTO jdlist (url) VALUES ('"+url+"')"
 #            cur.execute(sql)
 #            self.conn.commit()
             return item
