@@ -18,8 +18,9 @@ NEWSPIDER_MODULE = 'jdlist.spiders'
 IMAGES_STORE = '/data/ImageSpider'
 
 #mysql数据库配置
-MYSQL_HOST = '127.0.0.1'
-MYSQL_PORT = 3306
+#MYSQL_HOST = '127.0.0.1'
+MYSQL_HOST = '192.168.1.29'
+MYSQL_PORT = 3308
 MYSQL_USER = 'webtest'
 MYSQL_PASSWD = 'Tx@2018@2021@F1@com'
 MYSQL_CHARSET = 'utf8'
