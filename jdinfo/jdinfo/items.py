@@ -16,6 +16,7 @@ class JdinfoItem(scrapy.Item):
     title = scrapy.Field()
     price = scrapy.Field()
     comment = scrapy.Field()
+    brank = scrapy.Field()
 #    print('JdinfoItem:\n')
 #    print(url)
     pass

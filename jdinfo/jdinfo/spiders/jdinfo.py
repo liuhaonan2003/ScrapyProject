@@ -72,10 +72,15 @@ class JdinfoSpider(scrapy.Spider):
         commentData = urllib.request.urlopen(commentUrl).read().decode("utf-8", "ignore")
         patt1 = r'"CommentCount":(\d+),'
         comment = re.findall(patt1, commentData)
+        
+        brank = response.xpath("//ul[@id='parameter-brand']/li/@title").extract()
+        
         item = JdinfoItem()
         item["url"] = response.url
         item["product_title"] = product_title
         item["title"] = title[0]
         item["price"] = price[0]
         item["comment"] = comment[0]
+        item["brank"] = brank[0].strip()
+        print(item)
         yield item

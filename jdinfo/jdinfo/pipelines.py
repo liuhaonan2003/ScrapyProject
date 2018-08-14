@@ -22,7 +22,8 @@ class JdinfoPipeline(object):
                                                                "product_title": item["product_title"],
                                                                "title": item["title"], 
                                                                "price": item["price"], 
-                                                               "comment": item["comment"]
+                                                               "comment": item["comment"],
+                                                               "brank": item["brank"]
                                                                })
         return item
 
