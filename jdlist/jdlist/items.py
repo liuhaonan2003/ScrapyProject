@@ -12,6 +12,7 @@ class JdlistItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     url = scrapy.Field()
+    keyword = scrapy.Field()
 #    print('JdUrlListTestItem:\n')
 #    print(url)
     pass

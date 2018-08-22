@@ -74,13 +74,13 @@ class JdlistPipeline(object):
                 pattern = r"(\d+)\.html$"
                 sn = re.findall(pattern, url)
 #                print(url)
-                sql += "('"+sn[0]+"','"+url+"',"+format(t)+"),"
+                sql += "('"+item["keyword"]+"','"+sn[0]+"','"+url+"',"+format(t)+"),"
 #                sql += "('"+url+"'),"
             print(sql)
             if not sql.strip():
                 print('sql is null')
             else:    
-                sql = "INSERT INTO jdlist (sn,url,ctime) VALUES "+sql[0:len(sql)-1]
+                sql = "INSERT INTO jdlist (search,sn,url,ctime) VALUES "+sql[0:len(sql)-1]
 #                sql = "INSERT INTO jdlist (url) VALUES "+sql[0:len(sql)-1]
                 print(sql)
                 cur = self.conn.cursor()

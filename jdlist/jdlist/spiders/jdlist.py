@@ -32,18 +32,21 @@ class JdlistSpider(scrapy.Spider):
 
     def start_requests(self):
         input_text = input("请输入你要抓取的内容：\n")
+        keyword = str(input_text)
         for i in range(1, 100):
-            url = "https://search.jd.com/Search?keyword="+str(input_text)+"&enc=utf-8&page="+str(i*2-1)
+            url = "https://search.jd.com/Search?keyword="+keyword+"&enc=utf-8&page="+str(i*2-1)
             #url = "https://search.jd.com/Search?keyword=盛力电子教育专营店&enc=utf-8&page="+str(i*2-1)
-            yield Request(url=url,callback=self.parse)
+            yield Request(url=url,meta={'keyword': keyword},callback=self.parse)
 
     #获取商品手机100页网址
     def parse(self, response):
+        keyword = response.meta['keyword']
         urls = response.xpath('//div[@class="p-name p-name-type-2"]/a[@target="_blank"]/@href').extract()
         list = []
         for i in urls:
             url1 = response.urljoin(i)
             list.append(url1)
         item = JdlistItem()
+        item["keyword"] = keyword
         item["url"] = list
         yield item
