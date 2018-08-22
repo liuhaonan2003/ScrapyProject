@@ -69,11 +69,11 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    #'jd.pipelines.APipeline': 300,
+    'jd.pipelines.APipeline': 300,
     #'jd.pipelines.JDPipeline': 300,
     #'jd.pipelines.JdPhonePipeline': 300,
     #'jd.pipelines.JdShengLiShuMaPipeline': 300,
-    'jd.pipelines.JdUrlListTestPipeline': 300,
+#    'jd.pipelines.JdUrlListTestPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
