@@ -64,6 +64,7 @@ class DBHelper():
         fields = ','.join('`'+k+'`' for k in kwargs["data"].keys())
         values = ','.join(("%s", ) * len(kwargs["data"]))
         sql = 'INSERT INTO `%s` (%s) VALUES (%s)' % (kwargs["table"], fields, values)
+        print(sql)
         self.__cursor = self.__getCursor()
         self.__cursor.execute(sql, tuple(kwargs["data"].values()))
         insert_id = self.__cursor.lastrowid

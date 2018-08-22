@@ -9,13 +9,41 @@ from scrapy import signals
 from scrapy.http import HtmlResponse
 from selenium.common.exceptions import TimeoutException
 import time
+import random
+import base64
+from settings import USER_AGENTS
+from settings import PROXIES
+
+#from selenium.webdriver.common.action_chains import ActionChains
+#随机User-Agent
+class RandomUserAgent(object):
+    def process_request(self,request,spider):
+        useragent = random.choice(USER_AGENTS)
+        request.headers.setdefault('User-Agent',useragent)
+        #request.headers.setdefault('Host','html2.qktoutiao.com')
+        #request.headers.setdefault('Referer','http://home.qutoutiao.net/pages/home.html')
+ 
+#随机代理    
+class RandomProxy(object):
+    def process_request(self,request,spider):
+        proxy = random.choice(PROXIES)
+        request.meta['proxy'] = 'http://'+proxy['ip_port']
+        #base64_user_password = base64.b64encode(bytes(proxy['user_password'], 'utf-8'))
+        #decodebs64 = base64.b64decode(base64_user_password)
+        #print(base64_user_password,decodebs64)
+        if 'user_password' in proxy and proxy['user_password']:#需要用户名密码的代理
+            base64_user_password = str(base64.b64encode(bytes(proxy['user_password'], 'utf-8')))
+            request.headers['Proxy-Authorization'] = 'Basic '+base64_user_password
 
 class SeleniumMiddleware(object):
     def process_request(self, request, spider):
         if spider.name == 'jdinfo':
             try:
                 spider.browser.get(request.url)
+                spider.browser.implicitly_wait(3)
                 spider.browser.execute_script('window.scrollTo(0, document.body.scrollHeight)')
+                time.sleep(1)
+                
             except TimeoutException as e:
                 print('超时')
                 spider.browser.execute_script('window.stop()')
