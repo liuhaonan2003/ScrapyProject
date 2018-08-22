@@ -7,6 +7,7 @@
 import pymysql.cursors
 from scrapy import Request
 import time
+import re
 
 class JdlistPipeline(object):
     """
@@ -69,15 +70,17 @@ class JdlistPipeline(object):
             print('============================JdlistPipeline start===============================')
             t = int(time.time())
             for url in item["url"]:
-                print(t)
+                #print(t)
+                pattern = r"(\d+)\.html$"
+                sn = re.findall(pattern, url)
 #                print(url)
-                sql += "('"+url+"',"+format(t)+"),"
+                sql += "('"+sn[0]+"','"+url+"',"+format(t)+"),"
 #                sql += "('"+url+"'),"
             print(sql)
             if not sql.strip():
                 print('sql is null')
             else:    
-                sql = "INSERT INTO jdlist (url,ctime) VALUES "+sql[0:len(sql)-1]
+                sql = "INSERT INTO jdlist (sn,url,ctime) VALUES "+sql[0:len(sql)-1]
 #                sql = "INSERT INTO jdlist (url) VALUES "+sql[0:len(sql)-1]
                 print(sql)
                 cur = self.conn.cursor()
