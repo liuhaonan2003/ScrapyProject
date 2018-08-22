@@ -23,7 +23,7 @@ class JdinfoItem(scrapy.Item):
     detail = scrapy.Field()
     
     detail_img = scrapy.Field()
-    
+    preview = scrapy.Field()
     preview_n0 = scrapy.Field()
     preview_n1 = scrapy.Field()
     preview_n2 = scrapy.Field()

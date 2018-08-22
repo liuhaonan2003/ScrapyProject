@@ -37,6 +37,7 @@ class JdinfoPipeline(object):
                                                                "property": item["property"],
                                                                "detail": item["detail"],
                                                                "detail_img": item["detail_img"],
+                                                               "preview": item["preview"],
                                                                "preview_n0": item["preview_n0"],
                                                                "preview_n1": item["preview_n1"],
                                                                "preview_n2": item["preview_n2"],

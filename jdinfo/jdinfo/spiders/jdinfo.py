@@ -66,6 +66,7 @@ class JdinfoSpider(scrapy.Spider):
         #print(title)
         #获取产品图片
         preview_list = response.xpath("//div[@id='spec-list']/ul/li/img/@src").extract()
+        preview_imgzone = []
         preview_n0 = []
         preview_n1 = []
         preview_n2 = []
@@ -78,6 +79,7 @@ class JdinfoSpider(scrapy.Spider):
         preview_n9 = []
         for small in preview_list:
             print(small)
+            preview_imgzone.append(response.urljoin(re.sub(re.compile(r"/n[\d+]/", re.S), "/imgzone/", small)))
             preview_n0.append(response.urljoin(re.sub(re.compile(r"/n[\d+]/", re.S), "/n0/", small)))
             preview_n1.append(response.urljoin(re.sub(re.compile(r"/n[\d+]/", re.S), "/n1/", small)))
             preview_n2.append(response.urljoin(re.sub(re.compile(r"/n[\d+]/", re.S), "/n2/", small)))
@@ -175,7 +177,7 @@ class JdinfoSpider(scrapy.Spider):
         item["detail"] = detail
         
         item['detail_img'] = json.dumps(img_url)
-        
+        item['preview'] = json.dumps(preview_imgzone)
         item['preview_n0'] = json.dumps(preview_n0)
         item['preview_n1'] = json.dumps(preview_n1)
         item['preview_n2'] = json.dumps(preview_n2)
