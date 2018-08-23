@@ -7,14 +7,14 @@
 #import pymysql.cursors
 #from scrapy import Request
 import scrapy
-import logging
+#import logging
 import time
 from jdinfo.db.dbhelper import *
 from jdinfo import const
-from scrapy.pipelines.images import ImagesPipeline
-from scrapy.exceptions import DropItem
+#from scrapy.pipelines.images import ImagesPipeline
+#from scrapy.exceptions import DropItem
 
-logger = logging.getLogger('SaveImagePipeline')
+#logger = logging.getLogger('SaveImagePipeline')
 
 class JdinfoPipeline(object):   
     def open_spider(self,spider):
