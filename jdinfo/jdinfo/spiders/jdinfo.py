@@ -174,9 +174,11 @@ class JdinfoSpider(scrapy.Spider):
         item["brank"] = brank[0].strip()
 #        item["property"] = propertyStr
         item["property"] = json.dumps(property_arr)
-        item["detail"] = detail
+        item['detail'] = re.sub(re.compile(r"http[s]?://[^/]+?/", re.S), "/", str(detail))
+        item['detail'] = re.sub(re.compile(r"//[^/]+?/", re.S), "/", item['detail'])
+        item['detail'] = re.sub(re.compile(r'href=".*?"', re.S), 'href="#"', item['detail'])
         
-        item['detail_img'] = json.dumps(img_url)
+        item['detail_img'] = json.dumps(img_url+preview_imgzone+preview_n0+preview_n1+preview_n2+preview_n3+preview_n4+preview_n5+preview_n6+preview_n7+preview_n8+preview_n9)
         item['preview'] = json.dumps(preview_imgzone)
         item['preview_n0'] = json.dumps(preview_n0)
         item['preview_n1'] = json.dumps(preview_n1)
@@ -188,5 +190,17 @@ class JdinfoSpider(scrapy.Spider):
         item['preview_n7'] = json.dumps(preview_n7)
         item['preview_n8'] = json.dumps(preview_n8)
         item['preview_n9'] = json.dumps(preview_n9)
+        
+        item['preview'] = re.sub(re.compile(r"http[s]?://[^/]+?/", re.S), "/", item['preview'])
+        item['preview_n0'] = re.sub(re.compile(r"http[s]?://[^/]+?/", re.S), "/", item['preview_n0'])
+        item['preview_n1'] = re.sub(re.compile(r"http[s]?://[^/]+?/", re.S), "/", item['preview_n1'])
+        item['preview_n2'] = re.sub(re.compile(r"http[s]?://[^/]+?/", re.S), "/", item['preview_n2'])
+        item['preview_n3'] = re.sub(re.compile(r"http[s]?://[^/]+?/", re.S), "/", item['preview_n3'])
+        item['preview_n4'] = re.sub(re.compile(r"http[s]?://[^/]+?/", re.S), "/", item['preview_n4'])
+        item['preview_n5'] = re.sub(re.compile(r"http[s]?://[^/]+?/", re.S), "/", item['preview_n5'])
+        item['preview_n6'] = re.sub(re.compile(r"http[s]?://[^/]+?/", re.S), "/", item['preview_n6'])
+        item['preview_n7'] = re.sub(re.compile(r"http[s]?://[^/]+?/", re.S), "/", item['preview_n7'])
+        item['preview_n8'] = re.sub(re.compile(r"http[s]?://[^/]+?/", re.S), "/", item['preview_n8'])
+        item['preview_n9'] = re.sub(re.compile(r"http[s]?://[^/]+?/", re.S), "/", item['preview_n9'])
         #print(item)
         yield item
