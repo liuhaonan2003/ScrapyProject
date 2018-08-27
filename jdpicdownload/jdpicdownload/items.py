@@ -12,5 +12,5 @@ class JdpicdownloadItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     sn = scrapy.Field()
-    preview = scrapy.Field()
+    detail_img = scrapy.Field()
     pass

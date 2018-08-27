@@ -15,7 +15,7 @@ SPIDER_MODULES = ['jdpicdownload.spiders']
 NEWSPIDER_MODULE = 'jdpicdownload.spiders'
 
 # 设置图片存储目录
-IMAGES_STORE = '/data/ImageSpider'
+IMAGES_STORE = '/data/upload'
 
 #mysql数据库配置
 #MYSQL_HOST = '127.0.0.1'
@@ -77,6 +77,7 @@ DOWNLOAD_DELAY = 3
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {       
     'jdpicdownload.pipelines.ImagespiderPipeline': 300,
+    'jdpicdownload.pipelines.JdpicdownloadPipeline': 500,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
