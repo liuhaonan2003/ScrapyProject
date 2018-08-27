@@ -11,6 +11,7 @@ from selenium import webdriver
 from pyvirtualdisplay import Display
 import time
 import json
+
 display = Display(visible=0, size=(800, 600))
 
 class JdlistSpider(scrapy.Spider):
@@ -43,10 +44,13 @@ class JdlistSpider(scrapy.Spider):
         keyword = response.meta['keyword']
         urls = response.xpath('//div[@class="p-name p-name-type-2"]/a[@target="_blank"]/@href').extract()
         list = []
+        t = 'item.jd.com'
         for i in urls:
             url1 = response.urljoin(i)
-            list.append(url1)
+            if url1.rfind(t) != -1:
+                list.append(url1)
         item = JdlistItem()
         item["keyword"] = keyword
         item["url"] = list
+        #print(item)
         yield item

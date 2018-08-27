@@ -73,10 +73,10 @@ class JdlistPipeline(object):
                 #print(t)
                 pattern = r"(\d+)\.html$"
                 sn = re.findall(pattern, url)
-#                print(url)
+                #print(url)
                 sql += "('"+item["keyword"]+"','"+sn[0]+"','"+url+"',"+format(t)+"),"
 #                sql += "('"+url+"'),"
-            print(sql)
+            #print(sql)
             if not sql.strip():
                 print('sql is null')
             else:    
