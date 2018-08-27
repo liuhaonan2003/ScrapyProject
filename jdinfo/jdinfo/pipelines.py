@@ -18,11 +18,12 @@ from jdinfo import const
 
 class JdinfoPipeline(object):   
     def open_spider(self,spider):
-        self.db = DBHelper()
+        print('JdinfoPipeline--------------open_spider-------------liu')
         
     #mysql写入
     def process_item(self, item, spider):
         print('JdinfoPipeline---------------------------liu')
+        self.db = DBHelper()
         t = int(time.time())
         self.db.findKeySql(const.UPDATE_BY_ATTR, table="jdlist",data={"state": 1}, params={"sn": item["sn"]})
         self.db.findKeySql(const.INSERT, table="jdinfo", data={
@@ -50,9 +51,10 @@ class JdinfoPipeline(object):
                                                                "preview_n9": item["preview_n9"],
                                                                "ctime": t
                                                                })
+        self.db.close()
         time.sleep(1)
         return item
 
-    #关闭连接
-    def close_spider(self):
-        self.db.close()
+#    #关闭连接
+#    def close_spider(self):
+#        self.db.close()

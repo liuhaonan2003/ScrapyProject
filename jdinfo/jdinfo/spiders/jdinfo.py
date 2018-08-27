@@ -42,7 +42,7 @@ class JdinfoSpider(scrapy.Spider):
     def start_requests(self):
         print('开始爬取详情页')
         db = DBHelper()
-        res = db.findKeySql(const.FIND_BY_SQL, sql="select * from jdlist", params={"state": 0}, limit=0)
+        res = db.findKeySql(const.FIND_BY_SQL, sql="select * from jdlist", params={"state": 0}, limit=40)
         db.close()
         total = len(res)
         count = 0
