@@ -130,10 +130,11 @@ class DBHelper():
         # sql = self.__joinWhere(sql, kwargs["params"], kwargs["join"])
         kwargs["sql"] = sql
         sql = self.__joinWhere(**kwargs)
+        print(sql)
         self.__cursor = self.__getCursor()
         self.__cursor.execute(sql, tuple(kwargs["params"].values()))
         result = self.__cursor.fetchone()
-        return result[0] if result else 0
+        return result[0] if result[0] else 0
     # def exist(self,table,params={},join='AND'):
     def exist(self, **kwargs):
         """判断是否存在"""
